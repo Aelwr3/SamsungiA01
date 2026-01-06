@@ -3,176 +3,710 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samsung A01 - Data Recovery System</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Samsung Recovery System</title>
+    <style>
+        /* التصميم المحترف */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* الشريط العلوي */
+        .top-bar {
+            background: linear-gradient(90deg, #0066cc 0%, #003366 100%);
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #00aaff;
+            box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: #fff;
+            filter: drop-shadow(0 0 10px #00aaff);
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .logo-text span {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 255, 0, 0.1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid #00ff00;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h2 {
+            font-size: 24px;
+            color: #66ccff;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        /* العدادات */
+        .counters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .counter-card {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .counter-card:hover {
+            transform: translateY(-5px);
+            border-color: #3399ff;
+            box-shadow: 0 10px 30px rgba(51, 153, 255, 0.2);
+        }
+
+        .counter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3399ff, transparent);
+        }
+
+        .counter-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .counter-title i {
+            font-size: 24px;
+            color: #66ccff;
+            background: rgba(102, 204, 255, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .counter-number {
+            font-size: 42px;
+            font-weight: 300;
+            text-align: center;
+            color: #fff;
+            margin: 20px 0;
+            font-family: 'Roboto Mono', monospace;
+            text-shadow: 0 0 15px rgba(102, 204, 255, 0.5);
+        }
+
+        /* شريط التقدم */
+        .progress-container {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #0066cc, #00aaff);
+            width: 0%;
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        /* التيرمينال */
+        .terminal-container {
+            background: rgba(0, 10, 20, 0.9);
+            border-radius: 12px;
+            padding: 0;
+            margin: 40px 0;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            background: rgba(0, 20, 40, 0.9);
+            padding: 15px 25px;
+            border-bottom: 1px solid rgba(0, 150, 255, 0.3);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .terminal-body {
+            padding: 25px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .log-line {
+            margin: 8px 0;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .log-info { color: #66ccff; }
+        .log-success { color: #00ff88; }
+        .log-warning { color: #ffaa00; }
+        .log-error { color: #ff5555; }
+
+        /* الجاليري */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            background: linear-gradient(45deg, #1a2a3a, #2a3a4a);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 100, 255, 0.3);
+        }
+
+        .gallery-item::before {
+            content: attr(data-name);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #aaddff;
+            font-size: 11px;
+            padding: 5px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* الأزرار */
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0066cc 0%, #004488 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.6);
+            background: linear-gradient(135deg, #0077dd 0%, #0055aa 100%);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #66ccff;
+            border: 1px solid #3399ff;
+            padding: 18px 40px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(51, 153, 255, 0.1);
+        }
+
+        /* الشريط السفلي */
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 20, 40, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 40px;
+            border: 1px solid rgba(0, 100, 200, 0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            color: #00ccff;
+            font-weight: 300;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #88aadd;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* الرسالة التحذيرية */
+        .warning-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 100, 0, 0.1);
+            border: 1px solid #ff6600;
+            color: #ffaa66;
+            padding: 15px 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            z-index: 1000;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        /* التأثيرات */
+        .matrix-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.05;
+        }
+
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .counters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .counter-number {
+                font-size: 32px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <i class="fas fa-mobile-alt"></i>
-                <div class="logo-text">
-                    <h1>SAMSUNG</h1>
-                    <p class="subtitle">Galaxy A01 Recovery Dashboard</p>
-                </div>
+    <!-- تأثير الماتريكس الخلفي -->
+    <canvas class="matrix-effect" id="matrixCanvas"></canvas>
+
+    <!-- الشريط العلوي -->
+    <div class="top-bar">
+        <div class="logo">
+            <div class="logo-icon">⚙️</div>
+            <div class="logo-text">
+                <h1>SAMSUNG <span>RECOVERY SYSTEM</span></h1>
             </div>
-            <div class="device-info">
-                <p><i class="fas fa-microchip"></i> Device: Samsung Galaxy A01</p>
-                <p><i class="fas fa-circle" style="color: #0f0;"></i> Status: <span class="connected">Connected</span></p>
-                <p><i class="fas fa-database"></i> Storage: 32GB / 29.8GB Used</p>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main>
-            <!-- Data Counters -->
-            <section class="counters">
-                <div class="counter-card">
-                    <div class="counter-header">
-                        <i class="fas fa-images"></i>
-                        <h3>Recovered Photos</h3>
-                    </div>
-                    <div class="counter-display" id="photo-counter">
-                        0 / 12,458
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="photo-progress"></div>
-                    </div>
-                </div>
-
-                <div class="counter-card">
-                    <div class="counter-header">
-                        <i class="fas fa-video"></i>
-                        <h3>Recovered Videos</h3>
-                    </div>
-                    <div class="counter-display" id="video-counter">
-                        0 / 312
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="video-progress"></div>
-                    </div>
-                </div>
-
-                <div class="counter-card">
-                    <div class="counter-header">
-                        <i class="fas fa-file"></i>
-                        <h3>Other Files</h3>
-                    </div>
-                    <div class="counter-display" id="file-counter">
-                        0 / 4,217
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="file-progress"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- System Logs -->
-            <section class="logs-section">
-                <h2><i class="fas fa-terminal"></i> System Logs</h2>
-                <div class="terminal" id="terminal">
-                    <div id="log-content">
-                        <p>> Initializing Samsung Recovery Tool v3.2.1</p>
-                        <p>> Connecting to device: Samsung Galaxy A01</p>
-                        <p>> Establishing secure connection...</p>
-                        <p>> Scanning internal storage (29.8GB)...</p>
-                        <p>> Found partition: DCIM/Camera</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Progress -->
-            <section class="progress-section">
-                <h2><i class="fas fa-tasks"></i> Recovery Progress</h2>
-                <div class="global-progress">
-                    <div class="progress-info">
-                        <span>Overall Recovery</span>
-                        <span id="global-percent">0%</span>
-                    </div>
-                    <div class="progress-container large">
-                        <div class="progress-bar" id="global-progress"></div>
-                    </div>
-                    <div class="eta">Estimated time remaining: <span id="eta">15:42</span></div>
-                </div>
-            </section>
-
-            <!-- Gallery -->
-            <section class="gallery-section">
-                <h2><i class="fas fa-th"></i> Recovered Media Preview</h2>
-                <div class="gallery" id="gallery">
-                    <!-- سيتم إضافة الصور بالجافاسكريبت -->
-                </div>
-            </section>
-
-            <!-- Control Panel -->
-            <section class="control-section">
-                <button class="btn" id="download-btn">
-                    <i class="fas fa-download"></i> Download All Recovered Data (12.4 GB)
-                </button>
-                <button class="btn secondary" id="pause-btn">
-                    <i class="fas fa-pause"></i> Pause Recovery
-                </button>
-                
-                <div class="stats">
-                    <div class="stat">
-                        <span class="stat-label">Scan Rate:</span>
-                        <span class="stat-value">~247 files/sec</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label">Data Integrity:</span>
-                        <span class="stat-value">98.7%</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-label">Encryption:</span>
-                        <span class="stat-value">AES-256 (Active)</span>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p><i class="fas fa-exclamation-triangle"></i> <strong>Disclaimer:</strong> This is a simulation for educational/entertainment purposes only. No actual data recovery is occurring.</p>
-            <p class="timestamp">System Time: <span id="current-time"></span></p>
-        </footer>
+        </div>
+        <div class="status">
+            <div class="status-dot"></div>
+            <span>Connected to: Galaxy A01</span>
+        </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal" id="encryption-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-lock"></i> Storage Encryption Detected</h2>
-                <button class="close-btn" id="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="warning-icon">
-                    <i class="fas fa-shield-alt"></i>
+    <!-- المحتوى الرئيسي -->
+    <div class="container">
+        <!-- العنوان -->
+        <div class="header">
+            <h2>Data Recovery in Progress</h2>
+            <p style="color: #88aadd;">Real-time data retrieval from connected device</p>
+        </div>
+
+        <!-- العدادات -->
+        <div class="counters-grid">
+            <div class="counter-card">
+                <div class="counter-title">
+                    <i>📸</i>
+                    <h3>Photos Recovered</h3>
                 </div>
-                <p class="modal-text">
-                    <strong>Samsung Secure Folder encryption is active.</strong>
-                    <br><br>
-                    To download recovered data, please:
-                </p>
-                <ol class="modal-list">
-                    <li>Keep device connected for 45-60 minutes</li>
-                    <li>Ensure device remains unlocked</li>
-                    <li>Do not interrupt the connection</li>
-                    <li>Bypass encryption requires physical access</li>
-                </ol>
-                <p class="modal-note">
-                    <i class="fas fa-info-circle"></i>
-                    Estimated decryption time: 52 minutes
-                </p>
+                <div class="counter-number" id="photoCount">0 / 12,458</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="photoProgress"></div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn" id="continue-btn">Continue Recovery</button>
-                <button class="btn secondary" id="cancel-btn">Cancel Download</button>
+
+            <div class="counter-card">
+                <div class="counter-title">
+                    <i>🎥</i>
+                    <h3>Videos Recovered</h3>
+                </div>
+                <div class="counter-number" id="videoCount">0 / 312</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="videoProgress"></div>
+                </div>
+            </div>
+
+            <div class="counter-card">
+                <div class="counter-title">
+                    <i>📁</i>
+                    <h3>Files Processed</h3>
+                </div>
+                <div class="counter-number" id="fileCount">0 / 4,217</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="fileProgress"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التيرمينال -->
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <span style="color: #66ccff;">📟 System Logs</span>
+                <span style="color: #88aadd; font-size: 12px;">Live Monitoring</span>
+            </div>
+            <div class="terminal-body" id="terminal">
+                <!-- سيتم إضافة السجلات هنا -->
+            </div>
+        </div>
+
+        <!-- المعرض -->
+        <div class="gallery-grid" id="gallery">
+            <!-- سيتم إضافة الصور هنا -->
+        </div>
+
+        <!-- الأزرار -->
+        <div class="action-buttons">
+            <button class="btn-primary" id="downloadBtn">
+                <span>⬇️</span> Download All Data (14.8 GB)
+            </button>
+            <button class="btn-secondary" id="pauseBtn">
+                ⏸️ Pause Recovery
+            </button>
+        </div>
+
+        <!-- الإحصائيات -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="speed">247/sec</div>
+                <div class="stat-label">Recovery Speed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="timeRemaining">12:45</div>
+                <div class="stat-label">Time Remaining</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="integrity">98.7%</div>
+                <div class="stat-label">Data Integrity</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="encryption">AES-256</div>
+                <div class="stat-label">Encryption</div>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- الرسالة التحذيرية -->
+    <div class="warning-message" id="warningMessage">
+        ⚠️ <strong>Disclaimer:</strong> This is a simulation for educational purposes only.
+        No actual data recovery is taking place.
+    </div>
+
+    <script>
+        // تهيئة المتغيرات
+        let photos = 0, videos = 0, files = 0;
+        const totalPhotos = 12458, totalVideos = 312, totalFiles = 4217;
+        let isPaused = false;
+        let logIndex = 0;
+        let galleryIndex = 0;
+
+        // قائمة السجلات
+        const logs = [
+            "Scanning internal storage partitions...",
+            "Detected Samsung EXT4 filesystem",
+            "Mounting /data partition...",
+            "Found DCIM/Camera directory (8.2GB)",
+            "Recovering JPEG metadata...",
+            "Extracting thumbnails from database...",
+            "Processing WhatsApp Media folder...",
+            "Decrypting secure folder contents...",
+            "Verifying file signatures...",
+            "Rebuilding fragmented video files...",
+            "Checking for duplicates...",
+            "Compressing recovered data...",
+            "Creating recovery manifest...",
+            "Validating file integrity (CRC32)...",
+            "Optimizing storage allocation...",
+            "Preparing download package..."
+        ];
+
+        // العناصر
+        const terminal = document.getElementById('terminal');
+        const gallery = document.getElementById('gallery');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const warningMessage = document.getElementById('warningMessage');
+
+        // تحديث العدادات
+        function updateCounters() {
+            if (isPaused) return;
+
+            // زيادة الأرقام بشكل واقعي
+            photos = Math.min(totalPhotos, photos + Math.floor(Math.random() * 25) + 10);
+            videos = Math.min(totalVideos, videos + Math.floor(Math.random() * 3) + 1);
+            files = Math.min(totalFiles, files + Math.floor(Math.random() * 35) + 15);
+
+            // تحديث العرض
+            document.getElementById('photoCount').textContent = `${formatNumber(photos)} / ${formatNumber(totalPhotos)}`;
+            document.getElementById('videoCount').textContent = `${formatNumber(videos)} / ${formatNumber(totalVideos)}`;
+            document.getElementById('fileCount').textContent = `${formatNumber(files)} / ${formatNumber(totalFiles)}`;
+
+            // تحديث أشرطة التقدم
+            document.getElementById('photoProgress').style.width = `${(photos/totalPhotos)*100}%`;
+            document.getElementById('videoProgress').style.width = `${(videos/totalVideos)*100}%`;
+            document.getElementById('fileProgress').style.width = `${(files/totalFiles)*100}%`;
+
+            // تحديث الإحصائيات
+            document.getElementById('speed').textContent = `${Math.floor(Math.random()*100)+200}/sec`;
+            
+            // حساب الوقت المتبقي
+            const totalProgress = (photos + videos + files) / (totalPhotos + totalVideos + totalFiles);
+            const minutes = Math.floor((1 - totalProgress) * 25) + 8;
+            const seconds = Math.floor((1 - totalProgress) * 60);
+            document.getElementById('timeRemaining').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // إضافة سجلات
+        function addLog() {
+            if (isPaused) return;
+
+            const log = logs[logIndex % logs.length];
+            const types = ['log-info', 'log-success', 'log-warning'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            
+            const logLine = document.createElement('div');
+            logLine.className = `log-line ${type}`;
+            logLine.textContent = `[${getTimeStamp()}] ${log}`;
+            
+            terminal.appendChild(logLine);
+            terminal.scrollTop = terminal.scrollHeight;
+            
+            logIndex++;
+            
+            // إضافة صورة للمعرض كل 3 سجلات
+            if (logIndex % 3 === 0) {
+                addGalleryItem();
+            }
+        }
+
+        // إضافة عناصر للمعرض
+        function addGalleryItem() {
+            if (gallery.children.length >= 24) return;
+            
+            const types = ['IMG', 'VID', 'SCR', 'DOC'];
+            const extensions = ['.jpg', '.png', '.mp4', '.mov'];
+            
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.setAttribute('data-name', `${types[galleryIndex%4]}_${String(1000+galleryIndex).padStart(4,'0')}${extensions[galleryIndex%4]}`);
+            
+            // لون خلفية عشوائي
+            const hue = Math.floor(Math.random() * 360);
+            item.style.background = `linear-gradient(45deg, hsl(${hue}, 60%, 20%), hsl(${hue}, 60%, 30%))`;
+            
+            gallery.appendChild(item);
+            galleryIndex++;
+        }
+
+        // تنسيق الأرقام
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // الحصول على الطابع الزمني
+        function getTimeStamp() {
+            const now = new Date();
+            return `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
+        }
+
+        // تأثير الماتريكس
+        function initMatrix() {
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+            const charArray = chars.split("");
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
+            
+            function draw() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = "#0f0";
+                ctx.font = `${fontSize}px monospace`;
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = charArray[Math.floor(Math.random() * charArray.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 50);
+        }
+
+        // أحداث الأزرار
+        downloadBtn.addEventListener('click', function() {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<span>🔒</span> Decrypting (52:18 remaining)...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                this.innerHTML = originalText;
+                this.disabled = false;
+                
+                // إظهار رسالة
+                warningMessage.innerHTML = '🔒 <strong>Encryption Active:</strong> Download requires physical device access.';
+                setTimeout(() => {
+                    warningMessage.innerHTML = '⚠️ <strong>Disclaimer:</strong> This is a simulation for educational purposes only.';
+                }, 3000);
+            }, 3000);
+        });
+
+        pauseBtn.addEventListener('click', function() {
+            isPaused = !isPaused;
+            this.innerHTML = isPaused ? '▶️ Resume Recovery' : '⏸️ Pause Recovery';
+            
+            // إضافة سجل
+            const logLine = document.createElement('div');
+            logLine.className = 'log-line log-warning';
+            logLine.textContent = `[${getTimeStamp()}] Recovery ${isPaused ? 'PAUSED' : 'RESUMED'} by user`;
+            terminal.appendChild(logLine);
+            terminal.scrollTop = terminal.scrollHeight;
+        });
+
+        // إخفاء الرسالة بعد 10 ثوان
+        setTimeout(() => {
+            warningMessage.style.opacity = '0';
+            setTimeout(() => warningMessage.style.display = 'none', 500);
+        }, 10000);
+
+        // البدء
+        initMatrix();
+        setInterval(updateCounters, 500);
+        setInterval(addLog, 1500);
+
+        // تهيئة المعرض
+        for (let i = 0; i < 12; i++) {
+            setTimeout(addGalleryItem, i * 300);
+        }
+
+        // إضافة بعض السجلات الأولية
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => addLog(), i * 500);
+        }
+
+        // إعادة حجم الماتريكس عند تغيير حجم النافذة
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('matrixCanvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
 </body>
 </html>
