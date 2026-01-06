@@ -1,127 +1,194 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samsung Recovery System</title>
+    <title>Samsung Data Recovery Tool</title>
+    <!-- الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome للايقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* التصميم المحترف */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
-            color: #e0e0e0;
-            min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* الشريط العلوي */
-        .top-bar {
-            background: linear-gradient(90deg, #0066cc 0%, #003366 100%);
-            padding: 12px 30px;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #f0f0f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* تأثير الماتريكس الخلفي */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, rgba(0, 30, 60, 0.1) 0%, transparent 100%),
+                radial-gradient(circle at 20% 50%, rgba(0, 112, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 200, 255, 0.03) 0%, transparent 50%);
+            z-index: -2;
+        }
+
+        /* الهيدر الرئيسي */
+        .main-header {
+            background: linear-gradient(180deg, #000000 0%, #001833 100%);
+            border-bottom: 1px solid rgba(0, 112, 255, 0.3);
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #00aaff;
-            box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 20, 80, 0.2);
         }
 
-        .logo {
+        .samsung-logo {
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
-        .logo-icon {
-            font-size: 28px;
-            color: #fff;
-            filter: drop-shadow(0 0 10px #00aaff);
+        .samsung-logo img {
+            height: 32px;
+            filter: drop-shadow(0 0 10px rgba(0, 112, 255, 0.5));
         }
 
-        .logo-text h1 {
-            font-size: 22px;
-            font-weight: 300;
+        .samsung-logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #0072ff, #00d4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             letter-spacing: 1px;
         }
 
-        .logo-text span {
-            font-weight: 600;
-            color: #fff;
-        }
-
-        .status {
+        .device-status {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(0, 255, 0, 0.1);
-            padding: 8px 20px;
-            border-radius: 20px;
-            border: 1px solid #00ff00;
+            gap: 20px;
+            background: rgba(0, 50, 100, 0.3);
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 150, 255, 0.2);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .status-dot {
-            width: 10px;
-            height: 10px;
-            background: #00ff00;
+            width: 12px;
+            height: 12px;
+            background: #00ff88;
             border-radius: 50%;
             animation: pulse 2s infinite;
+            box-shadow: 0 0 10px #00ff88;
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.6; }
         }
 
         /* المحتوى الرئيسي */
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 30px;
+            padding: 40px;
         }
 
-        .header {
-            text-align: center;
+        /* بطاقة المعلومات */
+        .device-info-card {
+            background: linear-gradient(145deg, rgba(0, 30, 60, 0.8), rgba(0, 10, 30, 0.9));
+            border-radius: 20px;
+            padding: 30px;
             margin-bottom: 40px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 15px;
+            border: 1px solid rgba(0, 112, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 20, 80, 0.3);
             backdrop-filter: blur(10px);
         }
 
-        .header h2 {
-            font-size: 24px;
-            color: #66ccff;
-            margin-bottom: 10px;
-            font-weight: 300;
+        .device-info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .device-model {
+            font-size: 28px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .device-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(0, 40, 80, 0.4);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .spec-item:hover {
+            background: rgba(0, 60, 120, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .spec-icon {
+            font-size: 20px;
+            color: #0072ff;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 112, 255, 0.1);
+            border-radius: 8px;
         }
 
         /* العدادات */
-        .counters-grid {
+        .counters-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
         }
 
         .counter-card {
-            background: rgba(30, 30, 30, 0.7);
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid rgba(100, 150, 255, 0.2);
+            background: linear-gradient(145deg, rgba(0, 25, 50, 0.9), rgba(0, 15, 35, 0.95));
+            border-radius: 18px;
+            padding: 30px;
+            border: 1px solid rgba(0, 112, 255, 0.2);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-        }
-
-        .counter-card:hover {
-            transform: translateY(-5px);
-            border-color: #3399ff;
-            box-shadow: 0 10px 30px rgba(51, 153, 255, 0.2);
         }
 
         .counter-card::before {
@@ -129,122 +196,174 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #3399ff, transparent);
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #0072ff, #00d4ff);
         }
 
-        .counter-title {
+        .counter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 40, 120, 0.4);
+        }
+
+        .counter-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
-        .counter-title i {
-            font-size: 24px;
-            color: #66ccff;
-            background: rgba(102, 204, 255, 0.1);
-            padding: 12px;
-            border-radius: 10px;
+        .counter-icon {
+            font-size: 28px;
+            color: #0072ff;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 112, 255, 0.1);
+            border-radius: 12px;
         }
 
-        .counter-number {
-            font-size: 42px;
-            font-weight: 300;
-            text-align: center;
-            color: #fff;
-            margin: 20px 0;
+        .counter-numbers {
             font-family: 'Roboto Mono', monospace;
-            text-shadow: 0 0 15px rgba(102, 204, 255, 0.5);
+            font-size: 42px;
+            font-weight: 600;
+            text-align: center;
+            margin: 25px 0;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(0, 200, 255, 0.5);
         }
 
-        /* شريط التقدم */
         .progress-container {
-            height: 6px;
+            height: 8px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
+            border-radius: 4px;
             overflow: hidden;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #0066cc, #00aaff);
+            background: linear-gradient(90deg, #0072ff, #00d4ff);
+            border-radius: 4px;
             width: 0%;
-            border-radius: 3px;
-            transition: width 1s ease;
+            transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         /* التيرمينال */
-        .terminal-container {
-            background: rgba(0, 10, 20, 0.9);
-            border-radius: 12px;
-            padding: 0;
-            margin: 40px 0;
-            border: 1px solid rgba(0, 150, 255, 0.3);
+        .terminal-section {
+            background: rgba(0, 10, 20, 0.95);
+            border-radius: 20px;
+            margin: 50px 0;
+            border: 1px solid rgba(0, 112, 255, 0.3);
             overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
         .terminal-header {
-            background: rgba(0, 20, 40, 0.9);
-            padding: 15px 25px;
-            border-bottom: 1px solid rgba(0, 150, 255, 0.3);
+            background: linear-gradient(90deg, #001833, #003366);
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 150, 255, 0.3);
+        }
+
+        .terminal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 16px;
+            color: #00d4ff;
         }
 
         .terminal-body {
-            padding: 25px;
-            height: 300px;
+            padding: 30px;
+            height: 350px;
             overflow-y: auto;
-            font-family: 'Courier New', monospace;
+            font-family: 'Roboto Mono', monospace;
             font-size: 14px;
             line-height: 1.8;
         }
 
-        .log-line {
+        .terminal-line {
             margin: 8px 0;
             opacity: 0;
             animation: fadeIn 0.5s forwards;
+            display: flex;
+            gap: 10px;
         }
 
         @keyframes fadeIn {
             to { opacity: 1; }
         }
 
-        .log-info { color: #66ccff; }
-        .log-success { color: #00ff88; }
-        .log-warning { color: #ffaa00; }
-        .log-error { color: #ff5555; }
+        .log-time {
+            color: #888;
+            min-width: 80px;
+        }
 
-        /* الجاليري */
+        .log-type-info { color: #00d4ff; }
+        .log-type-success { color: #00ff88; }
+        .log-type-warning { color: #ffaa00; }
+        .log-type-error { color: #ff5555; }
+
+        /* المعرض */
+        .gallery-section {
+            background: rgba(0, 20, 40, 0.7);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+            border: 1px solid rgba(0, 112, 255, 0.2);
+        }
+
+        .gallery-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #ffffff;
+        }
+
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
         }
 
         .gallery-item {
             aspect-ratio: 1;
-            background: linear-gradient(45deg, #1a2a3a, #2a3a4a);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: linear-gradient(45deg, #001122, #003355);
+            border-radius: 12px;
             overflow: hidden;
             position: relative;
+            border: 1px solid rgba(0, 112, 255, 0.2);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .gallery-item:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 100, 255, 0.3);
+            border-color: #0072ff;
+            box-shadow: 0 10px 25px rgba(0, 112, 255, 0.3);
         }
 
-        .gallery-item::before {
-            content: attr(data-name);
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.9);
+            transition: filter 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-img {
+            filter: brightness(1.1);
+        }
+
+        .gallery-label {
             position: absolute;
             bottom: 0;
             left: 0;
@@ -252,193 +371,311 @@
             background: rgba(0, 0, 0, 0.8);
             color: #aaddff;
             font-size: 11px;
-            padding: 5px;
+            padding: 8px;
             text-align: center;
-            font-family: 'Courier New', monospace;
+            font-family: 'Roboto Mono', monospace;
         }
 
         /* الأزرار */
-        .action-buttons {
+        .action-section {
             display: flex;
-            gap: 20px;
             justify-content: center;
-            margin: 40px 0;
+            gap: 25px;
+            margin: 50px 0;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #0066cc 0%, #004488 100%);
-            color: white;
+        .action-btn {
+            padding: 20px 45px;
+            font-size: 18px;
+            font-weight: 600;
             border: none;
-            padding: 18px 40px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 500;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4);
+            gap: 15px;
+            min-width: 280px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0072ff, #00b2ff);
+            color: white;
+            box-shadow: 0 5px 20px rgba(0, 114, 255, 0.4);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.6);
-            background: linear-gradient(135deg, #0077dd 0%, #0055aa 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 114, 255, 0.6);
         }
 
         .btn-secondary {
-            background: transparent;
-            color: #66ccff;
-            border: 1px solid #3399ff;
-            padding: 18px 40px;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: rgba(0, 40, 80, 0.6);
+            color: #00d4ff;
+            border: 1px solid #0072ff;
         }
 
         .btn-secondary:hover {
-            background: rgba(51, 153, 255, 0.1);
+            background: rgba(0, 60, 120, 0.8);
+            transform: translateY(-3px);
         }
 
-        /* الشريط السفلي */
-        .stats-bar {
-            display: flex;
-            justify-content: space-around;
-            background: rgba(0, 20, 40, 0.7);
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 40px;
-            border: 1px solid rgba(0, 100, 200, 0.2);
+        /* الإحصائيات */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
         }
 
-        .stat-item {
+        .stat-card {
+            background: rgba(0, 30, 60, 0.5);
+            border-radius: 15px;
+            padding: 25px;
             text-align: center;
+            border: 1px solid rgba(0, 112, 255, 0.2);
         }
 
         .stat-value {
-            font-size: 24px;
-            color: #00ccff;
-            font-weight: 300;
+            font-size: 36px;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-family: 'Roboto Mono', monospace;
         }
 
         .stat-label {
-            font-size: 12px;
             color: #88aadd;
-            margin-top: 5px;
+            font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* الرسالة التحذيرية */
-        .warning-message {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 100, 0, 0.1);
-            border: 1px solid #ff6600;
-            color: #ffaa66;
-            padding: 15px 30px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            text-align: center;
-            max-width: 600px;
-            width: 90%;
-            z-index: 1000;
-            animation: slideUp 0.5s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translate(-50%, 100px); opacity: 0; }
-            to { transform: translate(-50%, 0); opacity: 1; }
-        }
-
-        /* التأثيرات */
-        .matrix-effect {
+        /* المودال */
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.05;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #001833, #003366);
+            width: 90%;
+            max-width: 600px;
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 150, 255, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 40, 120, 0.5);
+            animation: modalAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalAppear {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            background: linear-gradient(90deg, #002244, #004488);
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 200, 255, 0.3);
+        }
+
+        .modal-body {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 64px;
+            color: #ffaa00;
+            margin-bottom: 25px;
+        }
+
+        /* الفوتر */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #88aadd;
+            font-size: 14px;
         }
 
         /* التكيف مع الشاشات الصغيرة */
-        @media (max-width: 768px) {
-            .counters-grid {
+        @media (max-width: 1024px) {
+            .counters-section {
                 grid-template-columns: 1fr;
             }
             
-            .action-buttons {
+            .action-section {
                 flex-direction: column;
+                align-items: center;
             }
             
-            .counter-number {
+            .action-btn {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .main-header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px 20px;
+            }
+            
+            .device-info-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .counter-numbers {
                 font-size: 32px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- تأثير الماتريكس الخلفي -->
-    <canvas class="matrix-effect" id="matrixCanvas"></canvas>
+    <!-- الخلفية -->
+    <div class="matrix-bg"></div>
 
-    <!-- الشريط العلوي -->
-    <div class="top-bar">
-        <div class="logo">
-            <div class="logo-icon">⚙️</div>
-            <div class="logo-text">
-                <h1>SAMSUNG <span>RECOVERY SYSTEM</span></h1>
+    <!-- الهيدر -->
+    <header class="main-header">
+        <div class="samsung-logo">
+            <!-- شعار سامسونج الرسمي -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" alt="Samsung Logo">
+            <div class="samsung-logo-text">Data Recovery</div>
+        </div>
+        
+        <div class="device-status">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>Connected: Galaxy A01</span>
+            </div>
+            <div class="connection-info">
+                <i class="fas fa-wifi"></i> USB 3.0 • 480 Mbps
             </div>
         </div>
-        <div class="status">
-            <div class="status-dot"></div>
-            <span>Connected to: Galaxy A01</span>
-        </div>
-    </div>
+    </header>
 
     <!-- المحتوى الرئيسي -->
     <div class="container">
-        <!-- العنوان -->
-        <div class="header">
-            <h2>Data Recovery in Progress</h2>
-            <p style="color: #88aadd;">Real-time data retrieval from connected device</p>
+        <!-- معلومات الجهاز -->
+        <div class="device-info-card">
+            <div class="device-info-header">
+                <div class="device-model">
+                    <i class="fas fa-mobile-alt"></i> Samsung Galaxy A01
+                </div>
+                <div class="device-serial">
+                    Serial: SM-A015F/DS • Android 11
+                </div>
+            </div>
+            
+            <div class="device-specs">
+                <div class="spec-item">
+                    <div class="spec-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div>
+                        <div class="spec-label">المعالج</div>
+                        <div class="spec-value">Qualcomm Snapdragon 439</div>
+                    </div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-icon">
+                        <i class="fas fa-memory"></i>
+                    </div>
+                    <div>
+                        <div class="spec-label">الذاكرة</div>
+                        <div class="spec-value">2GB RAM • 32GB Storage</div>
+                    </div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-icon">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                    <div>
+                        <div class="spec-label">الحالة</div>
+                        <div class="spec-value">Battery: 78% • Connected</div>
+                    </div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div>
+                        <div class="spec-label">الحماية</div>
+                        <div class="spec-value">Knox Security • Encrypted</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- العدادات -->
-        <div class="counters-grid">
+        <div class="counters-section">
             <div class="counter-card">
-                <div class="counter-title">
-                    <i>📸</i>
-                    <h3>Photos Recovered</h3>
+                <div class="counter-header">
+                    <div class="counter-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div>
+                        <h3>الصور المستعادة</h3>
+                        <p>DCIM/Camera • Screenshots</p>
+                    </div>
                 </div>
-                <div class="counter-number" id="photoCount">0 / 12,458</div>
+                <div class="counter-numbers" id="photoCounter">0 / 12,458</div>
                 <div class="progress-container">
                     <div class="progress-bar" id="photoProgress"></div>
                 </div>
             </div>
-
+            
             <div class="counter-card">
-                <div class="counter-title">
-                    <i>🎥</i>
-                    <h3>Videos Recovered</h3>
+                <div class="counter-header">
+                    <div class="counter-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div>
+                        <h3>الفيديوهات المستعادة</h3>
+                        <p>MP4 • MOV • 3GP Formats</p>
+                    </div>
                 </div>
-                <div class="counter-number" id="videoCount">0 / 312</div>
+                <div class="counter-numbers" id="videoCounter">0 / 312</div>
                 <div class="progress-container">
                     <div class="progress-bar" id="videoProgress"></div>
                 </div>
             </div>
-
+            
             <div class="counter-card">
-                <div class="counter-title">
-                    <i>📁</i>
-                    <h3>Files Processed</h3>
+                <div class="counter-header">
+                    <div class="counter-icon">
+                        <i class="fas fa-file"></i>
+                    </div>
+                    <div>
+                        <h3>الملفات الأخرى</h3>
+                        <p>Documents • Audio • Archives</p>
+                    </div>
                 </div>
-                <div class="counter-number" id="fileCount">0 / 4,217</div>
+                <div class="counter-numbers" id="fileCounter">0 / 4,217</div>
                 <div class="progress-container">
                     <div class="progress-bar" id="fileProgress"></div>
                 </div>
@@ -446,10 +683,15 @@
         </div>
 
         <!-- التيرمينال -->
-        <div class="terminal-container">
+        <div class="terminal-section">
             <div class="terminal-header">
-                <span style="color: #66ccff;">📟 System Logs</span>
-                <span style="color: #88aadd; font-size: 12px;">Live Monitoring</span>
+                <div class="terminal-title">
+                    <i class="fas fa-terminal"></i>
+                    Samsung Recovery Console
+                </div>
+                <div class="terminal-status">
+                    <i class="fas fa-circle" style="color: #00ff88;"></i> Live
+                </div>
             </div>
             <div class="terminal-body" id="terminal">
                 <!-- سيتم إضافة السجلات هنا -->
@@ -457,255 +699,358 @@
         </div>
 
         <!-- المعرض -->
-        <div class="gallery-grid" id="gallery">
-            <!-- سيتم إضافة الصور هنا -->
-        </div>
-
-        <!-- الأزرار -->
-        <div class="action-buttons">
-            <button class="btn-primary" id="downloadBtn">
-                <span>⬇️</span> Download All Data (14.8 GB)
-            </button>
-            <button class="btn-secondary" id="pauseBtn">
-                ⏸️ Pause Recovery
-            </button>
+        <div class="gallery-section">
+            <div class="gallery-title">
+                <i class="fas fa-images"></i>
+                معاينة الوسائط المستعادة
+            </div>
+            <div class="gallery-grid" id="gallery">
+                <!-- سيتم إضافة الصور هنا -->
+            </div>
         </div>
 
         <!-- الإحصائيات -->
-        <div class="stats-bar">
-            <div class="stat-item">
-                <div class="stat-value" id="speed">247/sec</div>
-                <div class="stat-label">Recovery Speed</div>
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-value" id="speedStat">247/ثانية</div>
+                <div class="stat-label">سرعة الاستعادة</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="timeRemaining">12:45</div>
-                <div class="stat-label">Time Remaining</div>
+            
+            <div class="stat-card">
+                <div class="stat-value" id="timeStat">14:28</div>
+                <div class="stat-label">الوقت المتبقي</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="integrity">98.7%</div>
-                <div class="stat-label">Data Integrity</div>
+            
+            <div class="stat-card">
+                <div class="stat-value" id="integrityStat">98.7%</div>
+                <div class="stat-label">سلامة البيانات</div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="encryption">AES-256</div>
-                <div class="stat-label">Encryption</div>
+            
+            <div class="stat-card">
+                <div class="stat-value" id="encryptionStat">AES-256</div>
+                <div class="stat-label">التشفير</div>
+            </div>
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="action-section">
+            <button class="action-btn btn-primary" id="downloadBtn">
+                <i class="fas fa-download"></i>
+                تحميل البيانات المستعادة (14.8 جيجابايت)
+            </button>
+            
+            <button class="action-btn btn-secondary" id="pauseBtn">
+                <i class="fas fa-pause"></i>
+                إيقاف مؤقت
+            </button>
+        </div>
+    </div>
+
+    <!-- المودال -->
+    <div class="modal" id="encryptionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-lock"></i> كشف التشفير</h2>
+                <button class="close-btn" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 style="color: #ffaa00; margin-bottom: 20px;">Samsung Knox Encryption Active</h3>
+                <p style="margin-bottom: 25px; line-height: 1.8; color: #ccddff;">
+                    نظام حماية Knox الخاص بسامسونج يقوم بتشفير كافة البيانات.<br>
+                    يتطلب تحميل البيانات المستعادة:
+                </p>
+                <div style="text-align: right; margin: 25px 0; padding: 0 20px;">
+                    <p><i class="fas fa-check-circle" style="color: #00ff88;"></i> إبقاء الجهاز متصلاً</p>
+                    <p><i class="fas fa-check-circle" style="color: #00ff88;"></i> انتظار فك التشفير (٥٢ دقيقة)</p>
+                    <p><i class="fas fa-check-circle" style="color: #00ff88;"></i> الوصول الفعلي للجهاز</p>
+                </div>
+                <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
+                    <button class="action-btn btn-secondary" id="cancelBtn" style="min-width: 150px;">
+                        إلغاء
+                    </button>
+                    <button class="action-btn btn-primary" id="continueBtn" style="min-width: 150px;">
+                        متابعة
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- الرسالة التحذيرية -->
-    <div class="warning-message" id="warningMessage">
-        ⚠️ <strong>Disclaimer:</strong> This is a simulation for educational purposes only.
-        No actual data recovery is taking place.
-    </div>
+    <!-- الفوتر -->
+    <footer class="footer">
+        <p>
+            <i class="fas fa-exclamation-triangle" style="color: #ffaa00;"></i>
+            هذا موقع محاكاة تعليمي فقط. لا يتم استعادة بيانات حقيقية.
+            <br>
+            Samsung و Galaxy هي علامات تجارية مسجلة لشركة Samsung Electronics.
+        </p>
+        <p style="margin-top: 15px; font-family: 'Roboto Mono', monospace; color: #00d4ff;">
+            النظام: <span id="systemTime">--:--:--</span> • الإصدار: RecoveryTool v3.2.1
+        </p>
+    </footer>
 
+    <!-- الجافاسكريبت -->
     <script>
-        // تهيئة المتغيرات
-        let photos = 0, videos = 0, files = 0;
-        const totalPhotos = 12458, totalVideos = 312, totalFiles = 4217;
-        let isPaused = false;
-        let logIndex = 0;
-        let galleryIndex = 0;
+        // بيانات التطبيق
+        const appData = {
+            photos: { current: 0, total: 12458 },
+            videos: { current: 0, total: 312 },
+            files: { current: 0, total: 4217 },
+            isRunning: true,
+            logs: [
+                "[INFO] جارٍ تهيئة Samsung Recovery Tool v3.2.1...",
+                "[OK] تم الاتصال بالجهاز: Samsung Galaxy A01",
+                "[INFO] جارٍ فحص نظام الملفات (EXT4)...",
+                "[INFO] العثور على قسم DCIM/Camera (8.2 جيجابايت)",
+                "[OK] استعادة بيانات تعريف JPEG...",
+                "[INFO] معالجة مجلد وسائط واتساب...",
+                "[INFO] فك تشفير مجلد Secure Folder...",
+                "[WARNING] ملف تالف: IMG_20210302.jpg - تم تخطيه",
+                "[OK] استعادة IMG_20220115_083421.jpg بنجاح",
+                "[OK] استعادة VID_20211203_192345.mp4 بنجاح",
+                "[INFO] إنشاء الفهرس الاستردادي...",
+                "[INFO] التحقق من سلامة الملفات (CRC32)...",
+                "[INFO] ضغط البيانات المستعادة...",
+                "[WARNING] بطارية منخفضة - ٢٣٪ متبقية",
+                "[INFO] التحول إلى وضع الطاقة عبر USB"
+            ],
+            galleryItems: 24
+        };
 
-        // قائمة السجلات
-        const logs = [
-            "Scanning internal storage partitions...",
-            "Detected Samsung EXT4 filesystem",
-            "Mounting /data partition...",
-            "Found DCIM/Camera directory (8.2GB)",
-            "Recovering JPEG metadata...",
-            "Extracting thumbnails from database...",
-            "Processing WhatsApp Media folder...",
-            "Decrypting secure folder contents...",
-            "Verifying file signatures...",
-            "Rebuilding fragmented video files...",
-            "Checking for duplicates...",
-            "Compressing recovered data...",
-            "Creating recovery manifest...",
-            "Validating file integrity (CRC32)...",
-            "Optimizing storage allocation...",
-            "Preparing download package..."
-        ];
-
-        // العناصر
-        const terminal = document.getElementById('terminal');
-        const gallery = document.getElementById('gallery');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const pauseBtn = document.getElementById('pauseBtn');
-        const warningMessage = document.getElementById('warningMessage');
-
-        // تحديث العدادات
-        function updateCounters() {
-            if (isPaused) return;
-
-            // زيادة الأرقام بشكل واقعي
-            photos = Math.min(totalPhotos, photos + Math.floor(Math.random() * 25) + 10);
-            videos = Math.min(totalVideos, videos + Math.floor(Math.random() * 3) + 1);
-            files = Math.min(totalFiles, files + Math.floor(Math.random() * 35) + 15);
-
-            // تحديث العرض
-            document.getElementById('photoCount').textContent = `${formatNumber(photos)} / ${formatNumber(totalPhotos)}`;
-            document.getElementById('videoCount').textContent = `${formatNumber(videos)} / ${formatNumber(totalVideos)}`;
-            document.getElementById('fileCount').textContent = `${formatNumber(files)} / ${formatNumber(totalFiles)}`;
-
-            // تحديث أشرطة التقدم
-            document.getElementById('photoProgress').style.width = `${(photos/totalPhotos)*100}%`;
-            document.getElementById('videoProgress').style.width = `${(videos/totalVideos)*100}%`;
-            document.getElementById('fileProgress').style.width = `${(files/totalFiles)*100}%`;
-
-            // تحديث الإحصائيات
-            document.getElementById('speed').textContent = `${Math.floor(Math.random()*100)+200}/sec`;
-            
-            // حساب الوقت المتبقي
-            const totalProgress = (photos + videos + files) / (totalPhotos + totalVideos + totalFiles);
-            const minutes = Math.floor((1 - totalProgress) * 25) + 8;
-            const seconds = Math.floor((1 - totalProgress) * 60);
-            document.getElementById('timeRemaining').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        // إضافة سجلات
-        function addLog() {
-            if (isPaused) return;
-
-            const log = logs[logIndex % logs.length];
-            const types = ['log-info', 'log-success', 'log-warning'];
-            const type = types[Math.floor(Math.random() * types.length)];
-            
-            const logLine = document.createElement('div');
-            logLine.className = `log-line ${type}`;
-            logLine.textContent = `[${getTimeStamp()}] ${log}`;
-            
-            terminal.appendChild(logLine);
-            terminal.scrollTop = terminal.scrollHeight;
-            
-            logIndex++;
-            
-            // إضافة صورة للمعرض كل 3 سجلات
-            if (logIndex % 3 === 0) {
-                addGalleryItem();
-            }
-        }
-
-        // إضافة عناصر للمعرض
-        function addGalleryItem() {
-            if (gallery.children.length >= 24) return;
-            
-            const types = ['IMG', 'VID', 'SCR', 'DOC'];
-            const extensions = ['.jpg', '.png', '.mp4', '.mov'];
-            
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-            item.setAttribute('data-name', `${types[galleryIndex%4]}_${String(1000+galleryIndex).padStart(4,'0')}${extensions[galleryIndex%4]}`);
-            
-            // لون خلفية عشوائي
-            const hue = Math.floor(Math.random() * 360);
-            item.style.background = `linear-gradient(45deg, hsl(${hue}, 60%, 20%), hsl(${hue}, 60%, 30%))`;
-            
-            gallery.appendChild(item);
-            galleryIndex++;
-        }
-
-        // تنسيق الأرقام
-        function formatNumber(num) {
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-
-        // الحصول على الطابع الزمني
-        function getTimeStamp() {
-            const now = new Date();
-            return `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`;
-        }
-
-        // تأثير الماتريكس
-        function initMatrix() {
-            const canvas = document.getElementById('matrixCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
-            const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
-            const charArray = chars.split("");
-            const fontSize = 14;
-            const columns = canvas.width / fontSize;
-            const drops = Array(Math.floor(columns)).fill(1);
-            
-            function draw() {
-                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // تهيئة الموقع
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحديث العدادات
+            const updateCounters = () => {
+                if (!appData.isRunning) return;
                 
-                ctx.fillStyle = "#0f0";
-                ctx.font = `${fontSize}px monospace`;
+                // زيادة العدادات بشكل واقعي
+                appData.photos.current = Math.min(appData.photos.total, 
+                    appData.photos.current + Math.floor(Math.random() * 25) + 10);
+                appData.videos.current = Math.min(appData.videos.total, 
+                    appData.videos.current + Math.floor(Math.random() * 3) + 1);
+                appData.files.current = Math.min(appData.files.total, 
+                    appData.files.current + Math.floor(Math.random() * 35) + 15);
                 
-                for (let i = 0; i < drops.length; i++) {
-                    const text = charArray[Math.floor(Math.random() * charArray.length)];
-                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                        drops[i] = 0;
-                    }
-                    drops[i]++;
+                // تحديث العرض
+                document.getElementById('photoCounter').textContent = 
+                    `${formatNumber(appData.photos.current)} / ${formatNumber(appData.photos.total)}`;
+                document.getElementById('videoCounter').textContent = 
+                    `${formatNumber(appData.videos.current)} / ${formatNumber(appData.videos.total)}`;
+                document.getElementById('fileCounter').textContent = 
+                    `${formatNumber(appData.files.current)} / ${formatNumber(appData.files.total)}`;
+                
+                // تحديث أشرطة التقدم
+                document.getElementById('photoProgress').style.width = 
+                    `${(appData.photos.current / appData.photos.total) * 100}%`;
+                document.getElementById('videoProgress').style.width = 
+                    `${(appData.videos.current / appData.videos.total) * 100}%`;
+                document.getElementById('fileProgress').style.width = 
+                    `${(appData.files.current / appData.files.total) * 100}%`;
+                
+                // تحديث الإحصائيات
+                const totalProgress = (appData.photos.current + appData.videos.current + appData.files.current) / 
+                    (appData.photos.total + appData.videos.total + appData.files.total);
+                
+                const minutes = Math.floor((1 - totalProgress) * 25) + 8;
+                const seconds = Math.floor((1 - totalProgress) * 60);
+                document.getElementById('timeStat').textContent = 
+                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                document.getElementById('speedStat').textContent = 
+                    `${Math.floor(Math.random() * 100) + 200}/ثانية`;
+            };
+            
+            // إضافة سجلات
+            let logIndex = 0;
+            const addLog = () => {
+                if (!appData.isRunning || logIndex >= appData.logs.length) return;
+                
+                const terminal = document.getElementById('terminal');
+                const log = appData.logs[logIndex];
+                const logLine = document.createElement('div');
+                logLine.className = 'terminal-line';
+                
+                // إضافة الوقت
+                const timeSpan = document.createElement('span');
+                timeSpan.className = 'log-time';
+                timeSpan.textContent = getCurrentTime();
+                logLine.appendChild(timeSpan);
+                
+                // إضافة النص
+                const textSpan = document.createElement('span');
+                textSpan.className = getLogClass(log);
+                textSpan.textContent = log;
+                logLine.appendChild(textSpan);
+                
+                terminal.appendChild(logLine);
+                terminal.scrollTop = terminal.scrollHeight;
+                
+                logIndex++;
+                
+                // إضافة عناصر للمعرض كل 3 سجلات
+                if (logIndex % 3 === 0) {
+                    addGalleryItem();
                 }
+            };
+            
+            // إضافة صور للمعرض
+            let galleryIndex = 0;
+            const addGalleryItem = () => {
+                if (galleryIndex >= appData.galleryItems) return;
+                
+                const gallery = document.getElementById('gallery');
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                
+                // إنشاء صورة عشوائية (استخدام Unsplash)
+                const img = document.createElement('img');
+                img.className = 'gallery-img';
+                img.src = `https://picsum.photos/300/300?random=${galleryIndex}&blur=2`;
+                img.loading = 'lazy';
+                img.alt = `Recovered Image ${galleryIndex + 1}`;
+                
+                // تسمية الملف
+                const label = document.createElement('div');
+                label.className = 'gallery-label';
+                const types = ['IMG', 'SCR', 'PAN'];
+                const ext = galleryIndex % 5 === 0 ? '.png' : '.jpg';
+                label.textContent = `${types[galleryIndex % 3]}_${String(1000 + galleryIndex).padStart(4, '0')}${ext}`;
+                
+                item.appendChild(img);
+                item.appendChild(label);
+                gallery.appendChild(item);
+                
+                // تأثير الظهور
+                item.style.opacity = '0';
+                item.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'scale(1)';
+                }, 50);
+                
+                galleryIndex++;
+            };
+            
+            // تنسيق الأرقام
+            const formatNumber = (num) => {
+                return num.toLocaleString('ar-EG');
+            };
+            
+            // الحصول على الوقت الحالي
+            const getCurrentTime = () => {
+                const now = new Date();
+                return now.toLocaleTimeString('ar-EG', { 
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            };
+            
+            // تصنيف السجلات
+            const getLogClass = (log) => {
+                if (log.includes('[OK]')) return 'log-type-success';
+                if (log.includes('[WARNING]')) return 'log-type-warning';
+                if (log.includes('[ERROR]')) return 'log-type-error';
+                return 'log-type-info';
+            };
+            
+            // تحديث وقت النظام
+            const updateSystemTime = () => {
+                document.getElementById('systemTime').textContent = getCurrentTime();
+            };
+            
+            // أحداث الأزرار
+            const downloadBtn = document.getElementById('downloadBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const modal = document.getElementById('encryptionModal');
+            const closeModal = document.getElementById('closeModal');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const continueBtn = document.getElementById('continueBtn');
+            
+            downloadBtn.addEventListener('click', () => {
+                modal.style.display = 'flex';
+            });
+            
+            pauseBtn.addEventListener('click', () => {
+                appData.isRunning = !appData.isRunning;
+                const icon = pauseBtn.querySelector('i');
+                const text = pauseBtn.querySelector('span') || document.createElement('span');
+                
+                if (!pauseBtn.querySelector('span')) {
+                    pauseBtn.appendChild(text);
+                }
+                
+                if (appData.isRunning) {
+                    icon.className = 'fas fa-pause';
+                    text.textContent = ' إيقاف مؤقت';
+                    pauseBtn.style.background = 'rgba(0, 40, 80, 0.6)';
+                } else {
+                    icon.className = 'fas fa-play';
+                    text.textContent = ' استئناف';
+                    pauseBtn.style.background = 'rgba(0, 60, 120, 0.8)';
+                }
+            });
+            
+            closeModal.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            cancelBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            continueBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+                // إضافة سجل
+                const terminal = document.getElementById('terminal');
+                const logLine = document.createElement('div');
+                logLine.className = 'terminal-line';
+                
+                const timeSpan = document.createElement('span');
+                timeSpan.className = 'log-time';
+                timeSpan.textContent = getCurrentTime();
+                logLine.appendChild(timeSpan);
+                
+                const textSpan = document.createElement('span');
+                textSpan.className = 'log-type-warning';
+                textSpan.textContent = '[INFO] متابعة الاستعادة رغم التشفير...';
+                logLine.appendChild(textSpan);
+                
+                terminal.appendChild(logLine);
+                terminal.scrollTop = terminal.scrollHeight;
+            });
+            
+            // إغلاق المودال بالنقر خارج المحتوى
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // البدء
+            setInterval(updateCounters, 500);
+            setInterval(addLog, 2000);
+            setInterval(updateSystemTime, 1000);
+            
+            // تهيئة المعرض
+            for (let i = 0; i < 8; i++) {
+                setTimeout(addGalleryItem, i * 500);
             }
             
-            setInterval(draw, 50);
-        }
-
-        // أحداث الأزرار
-        downloadBtn.addEventListener('click', function() {
-            const originalText = this.innerHTML;
-            this.innerHTML = '<span>🔒</span> Decrypting (52:18 remaining)...';
-            this.disabled = true;
+            // إضافة سجلات أولية
+            for (let i = 0; i < 5; i++) {
+                setTimeout(addLog, i * 800);
+            }
             
-            setTimeout(() => {
-                this.innerHTML = originalText;
-                this.disabled = false;
-                
-                // إظهار رسالة
-                warningMessage.innerHTML = '🔒 <strong>Encryption Active:</strong> Download requires physical device access.';
-                setTimeout(() => {
-                    warningMessage.innerHTML = '⚠️ <strong>Disclaimer:</strong> This is a simulation for educational purposes only.';
-                }, 3000);
-            }, 3000);
-        });
-
-        pauseBtn.addEventListener('click', function() {
-            isPaused = !isPaused;
-            this.innerHTML = isPaused ? '▶️ Resume Recovery' : '⏸️ Pause Recovery';
-            
-            // إضافة سجل
-            const logLine = document.createElement('div');
-            logLine.className = 'log-line log-warning';
-            logLine.textContent = `[${getTimeStamp()}] Recovery ${isPaused ? 'PAUSED' : 'RESUMED'} by user`;
-            terminal.appendChild(logLine);
-            terminal.scrollTop = terminal.scrollHeight;
-        });
-
-        // إخفاء الرسالة بعد 10 ثوان
-        setTimeout(() => {
-            warningMessage.style.opacity = '0';
-            setTimeout(() => warningMessage.style.display = 'none', 500);
-        }, 10000);
-
-        // البدء
-        initMatrix();
-        setInterval(updateCounters, 500);
-        setInterval(addLog, 1500);
-
-        // تهيئة المعرض
-        for (let i = 0; i < 12; i++) {
-            setTimeout(addGalleryItem, i * 300);
-        }
-
-        // إضافة بعض السجلات الأولية
-        for (let i = 0; i < 5; i++) {
-            setTimeout(() => addLog(), i * 500);
-        }
-
-        // إعادة حجم الماتريكس عند تغيير حجم النافذة
-        window.addEventListener('resize', () => {
-            const canvas = document.getElementById('matrixCanvas');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            // تحديث وقت النظام فور التحميل
+            updateSystemTime();
         });
     </script>
 </body>
